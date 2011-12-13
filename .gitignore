@@ -1,0 +1,13 @@
+deploy.sh
+private/*
+public/*
+!public/wp-content/
+public/wp-content/*
+!public/wp-content/plugins/
+public/wp-content/plugins/*
+!public/wp-content/plugins/workshops/
+!public/wp-content/themes/
+public/wp-content/themes/*
+!public/wp-content/themes/workshops/
+public/wp-content/themes/workshops/assets/css/styles.css
+public/wp-content/themes/workshops/assets/js/packaged.js
