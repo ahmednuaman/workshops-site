@@ -14,3 +14,8 @@ ob_start();
 		<title><?php bloginfo( 'name' ); wp_title( ' &mdash; ' ); ?></title>
 	</head>
 	<body <?php body_class(); ?>>
+		<div id="rainbow"></div>
+		<div id="gradient"></div>
+		<div id="header">
+			
+		</div>
