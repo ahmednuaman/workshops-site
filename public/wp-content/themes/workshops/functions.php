@@ -1,16 +1,17 @@
 <?php
-
-$workshops_cache_folder	= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
-$workshops_cache_prefix	= 'workshops_';
+$workshops_cache_enabled	= false;
+$workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
+$workshops_cache_prefix		= 'workshops_';
 
 function workshops_check_cache()
 {
+	global $workshops_cache_enabled;
 	global $workshops_cache_folder;
 	global $workshops_cache_prefix;
 	
 	$f	= $workshops_cache_folder . $workshops_cache_prefix . workshops_hash_url( $_SERVER[ 'REQUEST_URI' ] );
 	
-	if ( file_exists( $f ) && !is_admin() )
+	if ( file_exists( $f ) && !is_admin() && $workshops_cache_enabled )
 	{
 		if ( filesize( $f ) < 1024 )
 		{
