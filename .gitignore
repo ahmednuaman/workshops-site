@@ -1,5 +1,4 @@
 deploy.sh
-private/*
 public/*
 !public/wp-content/
 public/wp-content/*
