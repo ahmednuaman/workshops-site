@@ -3,6 +3,8 @@ $workshops_cache_enabled	= false;
 $workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
 $workshops_cache_prefix		= 'workshops_';
 
+register_nav_menu( 'top', 'Top' );
+
 function workshops_check_cache()
 {
 	global $workshops_cache_enabled;
