@@ -3,7 +3,7 @@ $workshops_cache_enabled	= ( $_SERVER[ 'HTTP_HOST' ] !== 'workshops.dev' );
 $workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
 $workshops_cache_prefix		= 'workshops_';
 
-register_nav_menu( 'top', 'Top' );
+register_nav_menu( 'top_front_page', 'Top for front page' );
 
 function workshops_check_cache()
 {

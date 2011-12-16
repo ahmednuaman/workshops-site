@@ -18,7 +18,7 @@ ob_start();
 		<div id="gradient"></div>
 		<div id="menu">
 			<div id="menu_inner">
-				<?php wp_nav_menu( array( 'container' => '', 'menu' => 'Top', 'theme_location' => 'top' ) ); ?>
+				<?php wp_nav_menu( array( 'container' => '', 'theme_location' => 'top_front_page' ) ); ?>
 				<?php //get_search_form(); ?>
 			</div>
 		</div>
