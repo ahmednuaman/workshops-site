@@ -1,5 +1,5 @@
 <?php
-$workshops_cache_enabled	= false;
+$workshops_cache_enabled	= ( $_SERVER[ 'HTTP_HOST' ] !== 'workshops.dev' );
 $workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
 $workshops_cache_prefix		= 'workshops_';
 
