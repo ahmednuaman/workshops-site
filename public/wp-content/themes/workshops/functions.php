@@ -3,7 +3,144 @@ $workshops_cache_enabled	= ( $_SERVER[ 'HTTP_HOST' ] !== 'workshops.dev' );
 $workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
 $workshops_cache_prefix		= 'workshops_';
 
+$workshops_default_post_props	= array(
+	'show_ui'			=> true,
+	'show_in_menu'		=> true,
+	'public'			=> false,
+	'menu_position'		=> 20,
+	'supports'			=> array( 'title', 'revisions', 'thumbnail' ),
+	'show_in_nav_menus'	=> true,
+	'has_archive'		=> false
+);	
+
+$workshops_name_skills		= 'workshops_skills';
+$workshops_name_speakers	= 'workshops_speakers';
+
 register_nav_menu( 'top_front_page', 'Top for front page' );
+
+function workshops_init()
+{
+	workshops_register_post_types();
+}
+
+function workshops_register_post_types()
+{
+	global $workshops_default_post_props;
+	global $workshops_name_skills;
+	global $workshops_name_speakers;
+	
+	$props_skills	= $workshops_default_post_props;
+	
+	$props_skills[ 'label' ]	= __( 'The Skills' );
+	$props_skills[ 'labels' ]	= array(
+		'all_items'		=> __( 'All Skills' ),
+		'name'			=> __( 'Skills' ),
+		'singular_name'	=> __( 'A Skill' )
+	);
+	
+	register_post_type( $workshops_name_skills, $props_skills );
+	
+	$props_speakers	= $workshops_default_post_props;
+	
+	$props_speakers[ 'label' ]	= __( 'The Speakers' );
+	$props_speakers[ 'labels' ]	= array(
+		'all_items'		=> __( 'All Speakers' ),
+		'name'			=> __( 'Speakers' ),
+		'singular_name'	=> __( 'A Speaker' )
+	);
+	
+	array_push( $props_speakers[ 'supports' ], 'editor' );
+	
+	register_post_type( $workshops_name_speakers, $props_speakers );
+}
+
+function workshops_admin_init()
+{
+	workshops_register_meta_boxes();
+}
+
+function workshops_register_meta_boxes()
+{
+	global $workshops_name_skills;
+	global $workshops_name_speakers;
+	
+	add_meta_box( $workshops_name_skills . '_', __( '' ), 'workshops_meta_box_callback', $workshops_name_skills, 'normal', 'high' );
+}
+
+function workshops_meta_box_callback($p, $m)
+{
+	$d	= get_post_meta( $p->ID, $m[ 'id' ], true );
+	
+	if ( false )
+	{
+		workshops_get_editor( $m[ 'id' ], $d );
+	}
+	elseif ( false )
+	{
+		workshops_get_textarea( $m[ 'id' ], $m[ 'title' ], $d );
+	}
+	else
+	{
+		workshops_get_field( $m[ 'id' ], $m[ 'title' ], $d );
+	}
+}
+
+function workshops_get_editor($id, $d)
+{
+	wp_tiny_mce( false, array(
+		'editor_selector'	=> 'workshops_editor'
+	));
+	
+	?>
+	<textarea name="<?php echo $id; ?>" class="workshops_editor" rows="8" cols="40"><?php echo $d ?></textarea>
+	<?php
+}
+
+function workshops_get_field($id, $t, $d)
+{
+	?>
+	<input type="text" name="<?php echo $id; ?>" value="<?php echo $d ?>" placeholder="<?php echo $t; ?>" />
+	<?php
+}
+
+function workshops_get_textarea($id, $t, $d)
+{
+	?>
+	<p><strong>Remember, new lines count.</strong></p>
+	<textarea name="<?php echo $id; ?>" rows="8" cols="40" placeholder="<?php echo $t; ?>"><?php echo $d ?></textarea>
+	<?php
+}
+
+function workshops_convert_to_array($id, $d)
+{
+	if ( !is_array( $d ) )
+	{
+		$d	= array( $id => $d );
+	}
+	
+	return $d;
+}
+
+function workshops_admin_js()
+{
+	wp_enqueue_script( 'tiny_mce' );
+}
+
+function workshops_save_post($id)
+{
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+	{
+		return;
+	}
+	
+	foreach ( $_POST as $k => $v ) 
+	{
+		if ( strstr( $k, 'workshops_' ) )
+		{
+			update_post_meta( $id, $k, $v );
+		}
+	}
+}
 
 function workshops_check_cache()
 {
@@ -113,9 +250,13 @@ function workshops_404()
 	
 }
 
+add_action( 'init', 'workshops_init' );
+add_action( 'admin_init', 'workshops_admin_init' );
+add_action( 'admin_print_scripts', 'workshops_admin_js' );
 add_action( 'clean_post_cache', 'workshops_clear_cache' );
 add_action( 'delete_post', 'workshops_clear_cache' );
 add_action( 'posts_selection', 'workshops_check_cache' );
 add_action( 'save_post', 'workshops_clear_cache' );
+add_action( 'save_post', 'workshops_save_post' );
 add_action( 'shutdown', 'workshops_save_cache', 0 );
 add_action( 'update_option', 'workshops_clear_cache' );
