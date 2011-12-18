@@ -8,7 +8,7 @@ $workshops_default_post_props	= array(
 	'show_in_menu'		=> true,
 	'public'			=> false,
 	'menu_position'		=> 20,
-	'supports'			=> array( 'title', 'revisions', 'thumbnail' ),
+	'supports'			=> array( 'title', 'revisions', 'thumbnail', 'editor' ),
 	'show_in_nav_menus'	=> true,
 	'has_archive'		=> false
 );	
@@ -17,6 +17,8 @@ $workshops_name_skills		= 'workshops_skills';
 $workshops_name_speakers	= 'workshops_speakers';
 
 register_nav_menu( 'top_front_page', 'Top for front page' );
+
+add_theme_support( 'post-thumbnails' );
 
 function workshops_init()
 {
@@ -38,6 +40,8 @@ function workshops_register_post_types()
 		'singular_name'	=> __( 'A Skill' )
 	);
 	
+	array_push( $props_skills[ 'supports' ], 'excerpt' );
+	
 	register_post_type( $workshops_name_skills, $props_skills );
 	
 	$props_speakers	= $workshops_default_post_props;
@@ -48,8 +52,6 @@ function workshops_register_post_types()
 		'name'			=> __( 'Speakers' ),
 		'singular_name'	=> __( 'A Speaker' )
 	);
-	
-	array_push( $props_speakers[ 'supports' ], 'editor' );
 	
 	register_post_type( $workshops_name_speakers, $props_speakers );
 }
@@ -64,7 +66,7 @@ function workshops_register_meta_boxes()
 	global $workshops_name_skills;
 	global $workshops_name_speakers;
 	
-	add_meta_box( $workshops_name_skills . '_', __( '' ), 'workshops_meta_box_callback', $workshops_name_skills, 'normal', 'high' );
+	// add_meta_box( $workshops_name_skills . '_', __( '' ), 'workshops_meta_box_callback', $workshops_name_skills, 'normal', 'high' );
 }
 
 function workshops_meta_box_callback($p, $m)
@@ -251,8 +253,8 @@ function workshops_404()
 }
 
 add_action( 'init', 'workshops_init' );
-add_action( 'admin_init', 'workshops_admin_init' );
-add_action( 'admin_print_scripts', 'workshops_admin_js' );
+// add_action( 'admin_init', 'workshops_admin_init' );
+// add_action( 'admin_print_scripts', 'workshops_admin_js' );
 add_action( 'clean_post_cache', 'workshops_clear_cache' );
 add_action( 'delete_post', 'workshops_clear_cache' );
 add_action( 'posts_selection', 'workshops_check_cache' );
@@ -260,3 +262,6 @@ add_action( 'save_post', 'workshops_clear_cache' );
 add_action( 'save_post', 'workshops_save_post' );
 add_action( 'shutdown', 'workshops_save_cache', 0 );
 add_action( 'update_option', 'workshops_clear_cache' );
+
+add_image_size( 'skills-large', 540, 460 );
+add_image_size( 'skills-small', 140, 140, true );
