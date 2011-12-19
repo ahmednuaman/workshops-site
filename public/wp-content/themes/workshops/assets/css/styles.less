@@ -142,19 +142,23 @@ textarea {
 	-moz-border-radius: @radius;
 	border-radius: @radius;
 }
-.ease(@prop:all, @time:.4s)
+.ease(@prop:all, @time:.4s, @delay:0s)
 {
 	-webkit-transition-property: @prop;
 	-webkit-transition-duration: @time;
+	-webkit-transition-delay: @delay;
 	-webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
 	-moz-transition-property: @prop;
 	-moz-transition-duration: @time;
+	-moz-transition-delay: @delay;
 	-moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
 	-o-transition-property: @prop;
 	-o-transition-duration: @time;
+	-o-transition-delay: @delay;
 	-o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
 	transition-property: @prop;
 	transition-duration: @time;
+	transition-delay: @delay;
 	transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000);
 }
 .glow(@colour:#000000, @size:5px, @x:0, @y:0)
@@ -200,7 +204,7 @@ textarea {
 .absolute
 {
 	display: block;
-	position: absolute !important;
+	position: absolute;
 }
 .amp
 {
@@ -208,7 +212,7 @@ textarea {
 }
 .bold
 {
-	font-weight: bold !important;
+	font-weight: bold;
 }
 .caps
 {
@@ -223,16 +227,12 @@ textarea {
 .fixed
 {
 	display: block;
-	position: fixed !important;
-}
-.grey
-{
-	color: #999999;
+	position: fixed;
 }
 .hide
 {
-	display: none !important;
-	visibility: hidden !important;
+	display: none;
+	visibility: hidden;
 }
 .italic
 {
@@ -241,7 +241,7 @@ textarea {
 .left
 {
 	display: block;
-	float: left !important;
+	float: left;
 }
 .noselect
 {
@@ -258,17 +258,17 @@ textarea {
 .relative
 {
 	display: block;
-	position: relative !important;
+	position: relative;
 }
 .right
 {
 	display: block;
-	float: right !important;
+	float: right;
 }
 .show
 {
 	display: block;
-	visibility: visible !important;
+	visibility: visible;
 }
 .top
 {
@@ -548,6 +548,7 @@ strong
 			> li
 			{
 				.absolute;
+				.ease(opacity);
 				
 				.info,
 				.thumbnail
@@ -556,6 +557,7 @@ strong
 				}
 				.thumbnail
 				{
+					.ease(e('opacity, margin-top'));
 					width: 540px;
 					height: 460px;
 					margin-left: 30px;
@@ -564,6 +566,29 @@ strong
 				{
 					margin-left: 60px;
 					width: 340px;
+				}
+				.excerpt
+				{
+					.ease(opacity, .4s, .5s);
+				}
+				.content
+				{
+					.ease(opacity, .4s, 1s);
+				}
+			}
+			> li.hide
+			{
+				opacity: 0;
+				
+				.thumbnail
+				{
+					margin-top: 100px;
+				}
+				.thumbnail,
+				.excerpt,
+				.content
+				{
+					opacity: 0;
 				}
 			}
 		}

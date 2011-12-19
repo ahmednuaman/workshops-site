@@ -27,24 +27,36 @@ var S	= {
 		var lis	= $( '#learning-carousel > li' );
 		var ts	= $( '#learning-thumbs > li' );
 		
-		lis.not( ':nth-child(1)' ).hide();
+		if ( S.hasTransitions )
+		{
+			lis.addClass( 'hide' );
+		}
+		else
+		{
+			lis.not( ':nth-child(1)' ).hide();
+		}
 		
 		ts.click( function()
 		{
 			var t	= $( this );
 			var i	= t.index();
+			var ls	= lis.filter( ':visible' );
+			var l	= lis.eq( i );
 			
-			if ( S.hasTransitions && false )
+			if ( S.hasTransitions )
 			{
+				ls.addClass( 'hide' );
 				
+				setTimeout( function()
+				{
+					l.removeClass( 'hide' );
+				}, 400 );
 			}
 			else
 			{
-				lis.filter( ':visible' ).stop( true ).fadeOut( 'fast', S.ease, function()
+				ls.stop( true ).fadeOut( 'fast', S.ease, function()
 				{
-					var t	= lis.eq( i );
-					
-					$( '.thumbnail', t ).css({
+					$( '.thumbnail', l ).css({
 						'margin-top'	: 100,
 						'opacity'		: 0
 					}).animate({
@@ -52,11 +64,11 @@ var S	= {
 						'opacity'		: 1
 					}, 'slow', S.ease );
 					
-					$( '.excerpt', t ).hide().delay( 500 ).fadeIn();
+					$( '.excerpt', l ).hide().delay( 500 ).fadeIn();
 					
-					$( '.content', t ).hide().delay( 1000 ).fadeIn();
+					$( '.content', l ).hide().delay( 1000 ).fadeIn();
 					
-					t.fadeIn();
+					l.fadeIn();
 				});
 			}
 			
