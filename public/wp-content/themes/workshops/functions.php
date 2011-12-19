@@ -94,22 +94,22 @@ function workshops_get_editor($id, $d)
 	));
 	
 	?>
-	<textarea name="<?php echo $id; ?>" class="workshops_editor" rows="8" cols="40"><?php echo $d ?></textarea>
+		<textarea name="<?php echo $id; ?>" class="workshops_editor" rows="8" cols="40"><?php echo $d ?></textarea>
 	<?php
 }
 
 function workshops_get_field($id, $t, $d)
 {
 	?>
-	<input type="text" name="<?php echo $id; ?>" value="<?php echo $d ?>" placeholder="<?php echo $t; ?>" />
+		<input type="text" name="<?php echo $id; ?>" value="<?php echo $d ?>" placeholder="<?php echo $t; ?>" />
 	<?php
 }
 
 function workshops_get_textarea($id, $t, $d)
 {
 	?>
-	<p><strong>Remember, new lines count.</strong></p>
-	<textarea name="<?php echo $id; ?>" rows="8" cols="40" placeholder="<?php echo $t; ?>"><?php echo $d ?></textarea>
+		<p><strong>Remember, new lines count.</strong></p>
+		<textarea name="<?php echo $id; ?>" rows="8" cols="40" placeholder="<?php echo $t; ?>"><?php echo $d ?></textarea>
 	<?php
 }
 
@@ -221,29 +221,29 @@ function workshops_loop($t='')
 		<?php if ( $t ): ?>
 			<h3><?php echo $t; ?></h3>
 		<?php endif; ?>
-		<ul>
-			<?php while ( have_posts() ): the_post(); ?>
-				<li <?php post_class() ?> id="post-<?php the_ID(); ?>">
-					<h<?php echo $t ? '4' : '3' ?>><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></h<?php echo $t ? '4' : '3' ?>>
-					<div class="entry">
-						<p>
-							<small>
-								<?php the_time( 'l, F jS, Y' ); ?>
-							</small>
+			<ul>
+				<?php while ( have_posts() ): the_post(); ?>
+					<li <?php post_class() ?> id="post-<?php the_ID(); ?>">
+						<h<?php echo $t ? '4' : '3' ?>><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></h<?php echo $t ? '4' : '3' ?>>
+						<div class="entry">
+							<p>
+								<small>
+									<?php the_time( 'l, F jS, Y' ); ?>
+								</small>
+							</p>
+							<?php the_content(); ?>
+						</div>
+						<p class="postmetadata">
+							<?php the_tags( 'Tags: ', ' ~ ', '<br />' ); ?> Posted in <?php the_category(' ~ ') ?>
 						</p>
-						<?php the_content(); ?>
-					</div>
-					<p class="postmetadata">
-						<?php the_tags( 'Tags: ', ' ~ ', '<br />' ); ?> Posted in <?php the_category(' ~ ') ?>
-					</p>
-					<hr />
-				</li>
-			<?php endwhile; ?>
-		</ul>
-		<div class="navigation">
-			<div class="right"><?php previous_posts_link( 'Newer Entries &raquo;' ); ?></div>
-			<div class="left"><?php next_posts_link( '&laquo; Older Entries' ); ?></div>
-		</div>
+						<hr />
+					</li>
+				<?php endwhile; ?>
+			</ul>
+			<div class="navigation">
+				<div class="right"><?php previous_posts_link( 'Newer Entries &raquo;' ); ?></div>
+				<div class="left"><?php next_posts_link( '&laquo; Older Entries' ); ?></div>
+			</div>
 	<?php else: workshops_404(); endif;
 }
 
