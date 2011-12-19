@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 <div id="learning">
-	<ul id="learing-carousel">
+	<ul id="learning-carousel">
 		<?php
 		$q	= new WP_Query(
 			array(
@@ -30,7 +30,7 @@
 		}
 		?>
 	</ul>
-	<ul id="learing-thumbs">
+	<ul id="learning-thumbs">
 		<?php foreach ( $q->posts as $v ): ?>
 			<li>
 				<div class="thumbnail" style="background-image: url(<?php echo workshops_get_image_src( $v->ID, $workshops_size_small ); ?>)">
@@ -41,6 +41,7 @@
 						<?php echo $v->post_title; ?>
 					</h4>
 				</div>
+				<hr />
 			</li>
 		<?php endforeach; ?>
 	</ul>
