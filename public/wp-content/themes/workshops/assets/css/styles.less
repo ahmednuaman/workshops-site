@@ -290,7 +290,9 @@ div,
 h1,
 h2,
 h3,
-p
+p,
+ul,
+li
 {
 	font-family: Helvetica, Arial, sans-serif;
 	color: #333333;
@@ -351,7 +353,8 @@ textarea
 h1,
 h2,
 h3,
-p
+p,
+ul
 {
 	margin: 10px 0;
 }
@@ -361,6 +364,14 @@ h3:first-child,
 p:first-child
 {
 	margin-top: 0;
+}
+li
+{
+	margin-left: 10px;
+}
+li:before
+{
+	content: '– ';
 }
 strong
 {
@@ -439,6 +450,7 @@ strong
 		
 		ul
 		{
+			margin: 0;
 			
 			li
 			{
@@ -463,6 +475,10 @@ strong
 					.bold;
 				}
 			}
+			li:before
+			{
+				content: '';
+			}
 		}
 		#searchform
 		{
@@ -476,6 +492,25 @@ strong
 	button
 	{
 		.hide;
+	}
+}
+.home
+{
+	#learning
+	{
+		> ul
+		{
+			margin: 0;
+			
+			> li
+			{
+				margin: 0;
+			}
+			> li:before
+			{
+				content: ''
+			}
+		}
 	}
 }
 

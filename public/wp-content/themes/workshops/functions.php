@@ -15,6 +15,8 @@ $workshops_default_post_props	= array(
 
 $workshops_name_skills		= 'workshops_skills';
 $workshops_name_speakers	= 'workshops_speakers';
+$workshops_size_large		= 'skills-large';
+$workshops_size_small		= 'skills-small';
 
 register_nav_menu( 'top_front_page', 'Top for front page' );
 
@@ -252,6 +254,13 @@ function workshops_404()
 	
 }
 
+function workshops_get_image_src($id, $s)
+{
+	$i	= wp_get_attachment_image_src( get_post_thumbnail_id( $id ), $s );
+	
+	return $i[ 0 ];
+}
+
 add_action( 'init', 'workshops_init' );
 // add_action( 'admin_init', 'workshops_admin_init' );
 // add_action( 'admin_print_scripts', 'workshops_admin_js' );
@@ -263,5 +272,5 @@ add_action( 'save_post', 'workshops_save_post' );
 add_action( 'shutdown', 'workshops_save_cache', 0 );
 add_action( 'update_option', 'workshops_clear_cache' );
 
-add_image_size( 'skills-large', 540, 460 );
-add_image_size( 'skills-small', 140, 140, true );
+add_image_size( $workshops_size_large, 540, 460 );
+add_image_size( $workshops_size_small, 140, 140, true );
