@@ -5,6 +5,7 @@
 			<!--
 				var s	= [
 					'<?php bloginfo( 'stylesheet_directory' ); ?>/assets/js/jquery.js',
+					'<?php bloginfo( 'stylesheet_directory' ); ?>/assets/js/modernizr.js',
 					'<?php bloginfo( 'stylesheet_directory' ); ?>/assets/js/suitcase.js',
 					'http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js'
 				];

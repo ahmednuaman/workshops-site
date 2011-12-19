@@ -20,10 +20,12 @@
 						<h3>
 							<?php echo $v->post_title; ?>
 						</h3>
-						<p>
+						<p class="excerpt">
 							<?php echo $v->post_excerpt; ?>
 						</p>
-						<?php echo $v->post_content; ?>
+						<div class="content">
+							<?php echo $v->post_content; ?>
+						</div>
 					</div>
 				</li>
 			<?php

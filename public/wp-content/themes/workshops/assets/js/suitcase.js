@@ -1,6 +1,9 @@
 var S	= {
 	cssAnimation												: 'webkitAnimationEnd animationend oAnimationEnd',
 	cssTransition												: 'webkitTransitionEnd transitionend oTransitionEnd',
+	ease														: 'easeInOutExpo',
+	hasAnimations												: false,
+	hasTransitions												: false,
 	
 	ready														: function()
 	{
@@ -12,6 +15,55 @@ var S	= {
 		{
 			S.scrollTo( h );
 		}
+		
+		if ( $( 'body' ).hasClass( 'home' ) )
+		{
+			S.prepareHomeCarousel();
+		}
+	},
+	
+	prepareHomeCarousel											: function()
+	{
+		var lis	= $( '#learning-carousel > li' );
+		var ts	= $( '#learning-thumbs > li' );
+		
+		lis.not( ':nth-child(1)' ).hide();
+		
+		ts.click( function()
+		{
+			var t	= $( this );
+			var i	= t.index();
+			
+			if ( S.hasTransitions && false )
+			{
+				
+			}
+			else
+			{
+				lis.filter( ':visible' ).stop( true ).fadeOut( 'fast', S.ease, function()
+				{
+					var t	= lis.eq( i );
+					
+					$( '.thumbnail', t ).css({
+						'margin-top'	: 100,
+						'opacity'		: 0
+					}).animate({
+						'margin-top'	: 0,
+						'opacity'		: 1
+					}, 'slow', S.ease );
+					
+					$( '.excerpt', t ).hide().delay( 500 ).fadeIn();
+					
+					$( '.content', t ).hide().delay( 1000 ).fadeIn();
+					
+					t.fadeIn();
+				});
+			}
+			
+			ts.not( t ).removeClass( 'selected' );
+			
+			t.addClass( 'selected' );
+		}).eq( 0 ).click();
 	},
 	
 	scrollTo													: function(h)
@@ -20,7 +72,7 @@ var S	= {
 		
 		$( 'html, body' ).animate({
 			'scrollTop'	: y
-		}, 2000, 'easeInOutExpo' );
+		}, 2000, S.ease );
 	},
 	
 	detectBrowser												: function()
@@ -78,6 +130,9 @@ var S	= {
 		}
 		
 		$( 'html' ).removeClass( 'no-js' );
+		
+		S.hasAnimations		= $( 'html' ).hasClass( 'cssanimations' );
+		S.hasTransitions	= $( 'html' ).hasClass( 'csstransitions' );
 	}
 };
 
