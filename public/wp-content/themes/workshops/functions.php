@@ -261,6 +261,11 @@ function workshops_get_image_src($id, $s)
 	return $i[ 0 ];
 }
 
+function workshops_handle_title($t)
+{
+	return str_replace( '&amp;', '<span class="amp">&amp;</span>', $t );
+}
+
 add_action( 'init', 'workshops_init' );
 // add_action( 'admin_init', 'workshops_admin_init' );
 // add_action( 'admin_print_scripts', 'workshops_admin_js' );
@@ -271,6 +276,8 @@ add_action( 'save_post', 'workshops_clear_cache' );
 add_action( 'save_post', 'workshops_save_post' );
 add_action( 'shutdown', 'workshops_save_cache', 0 );
 add_action( 'update_option', 'workshops_clear_cache' );
+
+add_filter( 'the_title', 'workshops_handle_title' );
 
 add_image_size( $workshops_size_large, 540, 460 );
 add_image_size( $workshops_size_small, 140, 140, true );

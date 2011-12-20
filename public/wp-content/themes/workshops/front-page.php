@@ -18,7 +18,7 @@
 					</div>
 					<div class="info">
 						<h3>
-							<?php echo $v->post_title; ?>
+							<?php echo apply_filters( 'the_title', $v->post_title ); ?>
 						</h3>
 						<p class="excerpt">
 							<?php echo $v->post_excerpt; ?>
@@ -40,7 +40,7 @@
 				</div>
 				<div class="info">
 					<h4>
-						<?php echo $v->post_title; ?>
+						<?php echo apply_filters( 'the_title', $v->post_title ); ?>
 					</h4>
 				</div>
 				<hr />
