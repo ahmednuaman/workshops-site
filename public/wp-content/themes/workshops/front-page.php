@@ -12,7 +12,7 @@
 		foreach ( $q->posts as $v ) 
 		{
 			?>
-				<li>
+				<li class="hide">
 					<div class="thumbnail" style="background-image: url(<?php echo workshops_get_image_src( $v->ID, $workshops_size_large ); ?>)">
 						<canvas></canvas>
 					</div>
