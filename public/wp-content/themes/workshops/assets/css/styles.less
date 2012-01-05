@@ -1,5 +1,6 @@
 /* Vars */
 @colour_black: rgba(0, 0, 0, .85);
+@colour_black_trans: rgba(0, 0, 0, .2);
 @colour_blue: rgba(89, 177, 255, 1);
 @colour_green: rgba(123, 229, 215, 1);
 
@@ -211,6 +212,11 @@ textarea {
 {
 	font-family: 'Alice';
 	letter-spacing: 0;
+	margin-right: 3px;
+}
+.arrow
+{
+	font-size: 100pt;
 }
 .bold
 {
@@ -312,6 +318,22 @@ textarea {
 	.relative;
 	width: 100%;
 	text-align: center;
+	
+	hr
+	{
+		.absolute;
+		width: 340px;
+		margin: 0;
+		top: 20px;
+	}
+	hr:last-child
+	{
+		right: 0;
+	}
+}
+.top-margin
+{
+	margin-top: 40px;
 }
 
 /* Tags */
@@ -359,7 +381,7 @@ a:active
 address
 {
 	.left;
-	margin: 15px 0 0 40px;
+	margin: 15px 0 0 15px;
 }
 blockquote p:before
 {
@@ -393,7 +415,7 @@ h1
 	letter-spacing: -5px;
 }
 h1 em,
-#dates h1
+#content h1
 {
 	.georgia;
 }
@@ -417,7 +439,7 @@ hr
 /*	.ease(width);*/	
 	width: 100%;
 	height: 1px;
-	background: rgba(0, 0, 0, .2);
+	background: @colour_black_trans;
 	margin: 10px auto;
 	border: none;
 }
@@ -425,6 +447,7 @@ iframe
 {
 	.corners;
 	border: 0;
+	background: none;
 }
 input,
 textarea
@@ -445,10 +468,14 @@ p:first-child
 {
 	margin-top: 0;
 }
-p .twitter-mention-button
+p 
 {
-	vertical-align: bottom;
-	margin: 0 2px;
+	.twitter-share-button,
+	.twitter-mention-button
+	{
+		vertical-align: bottom;
+		margin: 0 2px;
+	}
 }
 li
 {
@@ -561,13 +588,16 @@ strong
 		content: '';
 	}
 }
-#dates
+#content
 {
 	h1
 	{
 		font-size: 30pt;
 		letter-spacing: -3px;
 	}
+}
+#dates
+{
 	iframe
 	{
 		width: 100%;
@@ -580,6 +610,74 @@ strong
 	.col:last-child
 	{
 		width: 660px;
+	}
+}
+#cost
+{
+	.col
+	{
+		width: 300px;
+		padding: 0 100px;
+		margin: 0;
+		text-align: center;
+		
+		h3
+		{
+			font-size: 18pt;
+		}
+	}
+	.or
+	{
+		.absolute;
+		padding: 20px;
+		margin: 0;
+		background: @colour_black_trans;
+		left: 490px;
+		.corners(50%);
+	}
+}
+#signup
+{
+	.header-block
+	{
+		margin-bottom: 40px;
+	}
+	.iframe
+	{
+		.right;
+		width: 560px;
+		padding: 20px;
+		background: #ffffff;
+		.corners;
+	}
+	iframe
+	{
+		height: 510px;
+		width: 100%;
+	}
+	.col
+	{
+		.left;
+		width: 340px;
+		text-align: center;
+		
+		.arrow
+		{
+			.left;
+			margin: 20px 0 70px;
+			width: 100%;
+		}
+	}
+}
+#footnote .col
+{
+	.cols(3);
+	
+	p
+	{
+		-webkit-column-break-after: always;
+		-moz-column-break-after: always;
+		column-break-after: always;
 	}
 }
 

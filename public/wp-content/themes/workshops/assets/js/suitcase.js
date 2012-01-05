@@ -11,15 +11,11 @@ var Workshops	= function(window)
 		
 		detectBrowser();
 		prepareHashLinks();
+		prepareHeaderBlocks();
 		
 		if ( h.length > 0 )
 		{
 			scrollTo( h );
-		}
-		
-		if ( $( 'body' ).hasClass( 'home' ) )
-		{
-			prepareHomeCarousel();
 		}
 	}
 	
@@ -35,65 +31,14 @@ var Workshops	= function(window)
 		});
 	}
 	
-	function prepareHomeCarousel()
+	function prepareHeaderBlocks()
 	{
-		var lis	= $( '#learning-carousel > li' );
-		var ts	= $( '#learning-thumbs > li' );
-		
-		if ( hasTransitions )
-		{
-			lis.addClass( 'hide' );
-		}
-		else
-		{
-			lis.not( ':nth-child(1)' ).hide();
-		}
-		
-		ts.click( function()
-		{
-			var t	= $( this );
-			var i	= t.index();
-			var ls	= lis.filter( ':visible' );
-			var l	= lis.eq( i );
-			
-			if ( hasTransitions )
-			{
-				ls.addClass( 'hide' );
-				
-				setTimeout( function()
-				{
-					l.removeClass( 'hide' );
-				}, 400 );
-			}
-			else
-			{
-				ls.stop( true ).fadeOut( 'fast', ease, function()
-				{
-					$( '.thumbnail', l ).css({
-						'margin-top'	: 100,
-						'opacity'		: 0
-					}).animate({
-						'margin-top'	: 0,
-						'opacity'		: 1
-					}, 'slow', ease );
-					
-					$( '.excerpt', l ).hide().delay( 500 ).fadeIn();
-					
-					$( '.content', l ).hide().delay( 1000 ).fadeIn();
-					
-					l.fadeIn();
-				});
-			}
-			
-			ts.not( t ).removeClass( 'selected' );
-			
-			t.addClass( 'selected' );
-		}).eq( 0 ).click();
+		$( '.header-block' ).prepend( '<hr />' ).append( '<hr />' );
 	}
 	
 	function scrollTo(h)
 	{
-		var y	= h.length > 1 ? $( h ).offset().top - menuHeight : 0; console.log(y,$( h ).offset(),$(h));
+		var y	= h.length > 1 ? $( h ).offset().top - menuHeight : 0;
 		
 		$( 'html, body' ).animate({
 			'scrollTop'	: y
