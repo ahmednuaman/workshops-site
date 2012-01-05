@@ -1,7 +1,7 @@
 <?php
+$workshops_prefix			= 'workshops_';
 $workshops_cache_enabled	= ( $_SERVER[ 'HTTP_HOST' ] !== 'workshops.dev' );
 $workshops_cache_folder		= dirname( dirname( dirname( __FILE__ ) ) ) . '/cache/';
-$workshops_cache_prefix		= 'workshops_';
 
 $workshops_default_post_props	= array(
 	'show_ui'			=> true,
@@ -13,8 +13,8 @@ $workshops_default_post_props	= array(
 	'has_archive'		=> false
 );	
 
-$workshops_name_skills		= 'workshops_skills';
-$workshops_name_speakers	= 'workshops_speakers';
+$workshops_name_skills		= $workshops_prefix . 'skills';
+$workshops_name_speakers	= $workshops_prefix . 'speakers';
 $workshops_size_large		= 'skills-large';
 $workshops_size_small		= 'skills-small';
 
@@ -44,7 +44,7 @@ function workshops_register_post_types()
 	
 	array_push( $props_skills[ 'supports' ], 'excerpt' );
 	
-	register_post_type( $workshops_name_skills, $props_skills );
+	// register_post_type( $workshops_name_skills, $props_skills );
 	
 	$props_speakers	= $workshops_default_post_props;
 	
@@ -58,41 +58,43 @@ function workshops_register_post_types()
 	register_post_type( $workshops_name_speakers, $props_speakers );
 }
 
-function workshops_admin_init()
-{
-	workshops_register_meta_boxes();
-}
-
 function workshops_register_meta_boxes()
 {
-	global $workshops_name_skills;
-	global $workshops_name_speakers;
+	global $workshops_prefix;
 	
-	// add_meta_box( $workshops_name_skills . '_', __( '' ), 'workshops_meta_box_callback', $workshops_name_skills, 'normal', 'high' );
+	add_meta_box( $workshops_prefix . 'date', __( 'Date of workshop' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
+	add_meta_box( $workshops_prefix . 'time', __( 'Time of workshop' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
+	add_meta_box( $workshops_prefix . 'speaker', __( 'Speakers' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
+	add_meta_box( $workshops_prefix . 'location', __( 'Location' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
 }
 
 function workshops_meta_box_callback($p, $m)
 {
-	$d	= get_post_meta( $p->ID, $m[ 'id' ], true );
+	global $workshops_prefix;
 	
-	if ( false )
+	$id	= $m[ 'id' ];
+	$d	= get_post_meta( $p->ID, $id, true );
+	
+	if ( $id === $workshops_prefix . 'location' )
 	{
-		workshops_get_editor( $m[ 'id' ], $d );
+		workshops_get_editor( $id, $d );
 	}
 	elseif ( false )
 	{
-		workshops_get_textarea( $m[ 'id' ], $m[ 'title' ], $d );
+		workshops_get_textarea( $id, $m[ 'title' ], $d );
 	}
 	else
 	{
-		workshops_get_field( $m[ 'id' ], $m[ 'title' ], $d );
+		workshops_get_field( $id, $m[ 'title' ], $d );
 	}
 }
 
 function workshops_get_editor($id, $d)
 {
+	global $workshops_prefix;
+	
 	wp_tiny_mce( false, array(
-		'editor_selector'	=> 'workshops_editor'
+		'editor_selector'	=> $workshops_prefix . 'editor'
 	));
 	
 	?>
@@ -132,6 +134,8 @@ function workshops_admin_js()
 
 function workshops_save_post($id)
 {
+	global $workshops_prefix;
+	
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 	{
 		return;
@@ -139,7 +143,7 @@ function workshops_save_post($id)
 	
 	foreach ( $_POST as $k => $v ) 
 	{
-		if ( strstr( $k, 'workshops_' ) )
+		if ( strstr( $k, $workshops_prefix ) )
 		{
 			update_post_meta( $id, $k, $v );
 		}
@@ -150,9 +154,9 @@ function workshops_check_cache()
 {
 	global $workshops_cache_enabled;
 	global $workshops_cache_folder;
-	global $workshops_cache_prefix;
+	global $workshops_prefix;
 	
-	$f	= $workshops_cache_folder . $workshops_cache_prefix . workshops_hash_url( $_SERVER[ 'REQUEST_URI' ] );
+	$f	= $workshops_cache_folder . $workshops_prefix . workshops_hash_url( $_SERVER[ 'REQUEST_URI' ] );
 	
 	if ( file_exists( $f ) && !is_admin() && $workshops_cache_enabled )
 	{
@@ -172,7 +176,7 @@ function workshops_check_cache()
 function workshops_clear_cache()
 {
 	global $workshops_cache_folder;
-	global $workshops_cache_prefix;
+	global $workshops_prefix;
 	
 	$h	= opendir( $workshops_cache_folder );
 	
@@ -180,7 +184,7 @@ function workshops_clear_cache()
 	{
 		while ( ( $f = readdir( $h ) ) !== false )
 		{
-			if ( strstr( $f, $workshops_cache_prefix ) )
+			if ( strstr( $f, $workshops_prefix ) )
 			{
 				unlink( $workshops_cache_folder . $f );
 			}
@@ -198,7 +202,7 @@ function workshops_hash_url($s)
 function workshops_save_cache()
 {
 	global $workshops_cache_folder;
-	global $workshops_cache_prefix;
+	global $workshops_prefix;
 	global $post;
 	
 	if ( $post->post_type != 'post' && $post->post_type != 'page' )
@@ -206,7 +210,7 @@ function workshops_save_cache()
 		return;
 	}
 	
-	$f	= $workshops_cache_folder . $workshops_cache_prefix . workshops_hash_url( $_SERVER[ 'REQUEST_URI' ] );
+	$f	= $workshops_cache_folder . $workshops_prefix . workshops_hash_url( $_SERVER[ 'REQUEST_URI' ] );
 	$h 	= ob_get_contents();
 	
 	if ( /*!file_exists( $f ) &&*/ !is_admin() && ob_get_length() > 0 )
@@ -266,18 +270,83 @@ function workshops_handle_title($t)
 	return str_replace( '&amp;', '<span class="amp">&amp;</span>', $t );
 }
 
-add_action( 'init', 'workshops_init' );
-// add_action( 'admin_init', 'workshops_admin_init' );
-// add_action( 'admin_print_scripts', 'workshops_admin_js' );
-add_action( 'clean_post_cache', 'workshops_clear_cache' );
-add_action( 'delete_post', 'workshops_clear_cache' );
-add_action( 'posts_selection', 'workshops_check_cache' );
-add_action( 'save_post', 'workshops_clear_cache' );
-add_action( 'save_post', 'workshops_save_post' );
-add_action( 'shutdown', 'workshops_save_cache', 0 );
-add_action( 'update_option', 'workshops_clear_cache' );
+function workshops_the_speaker()
+{
+	$n	= workshops_get_the_speaker();
+	
+	echo '<a href="/speakers/#' . strtolower( str_replace( ' ', '', $n ) ) . '">' . $n . '</a>';
+}
 
-add_filter( 'the_title', 'workshops_handle_title' );
+function workshops_get_the_speaker()
+{
+	global $post;
+	global $workshops_prefix;
+	
+	$n	= get_post_meta( $post->ID, $workshops_prefix . 'speaker', true );
+	
+	return $n;
+}
+
+function workshops_the_time()
+{
+	echo '<a href="http://time.is/info/United_Kingdom">' . workshops_get_the_time() . '</a>';
+}
+
+function workshops_get_the_time()
+{
+	global $post;
+	global $workshops_prefix;
+	
+	$n	= get_post_meta( $post->ID, $workshops_prefix . 'time', true );
+	
+	return $n;
+}
+
+function workshops_the_location()
+{
+	$n	= workshops_get_the_location();
+	
+	echo '<a href="http://maps.google.co.uk/maps?q=' . urlencode( $n ) . '">' . nl2br( $n ) . '</a>';
+}
+
+function workshops_get_the_location()
+{
+	global $post;
+	global $workshops_prefix;
+	
+	$n	= get_post_meta( $post->ID, $workshops_prefix . 'location', true );
+	
+	return $n;
+}
+
+function workshops_the_date()
+{
+	echo workshops_get_the_date();
+}
+
+function workshops_get_the_date()
+{
+	global $post;
+	global $workshops_prefix;
+	
+	$n	= get_post_meta( $post->ID, $workshops_prefix . 'date', true );
+	
+	return $n !== 'TBC' ? date( get_option( 'date_format' ), strtotime( $n ) ) : $n;
+}
+
+
+add_action( 'init', $workshops_prefix . 'init' );
+add_action( 'add_meta_boxes', $workshops_prefix . 'register_meta_boxes' );
+add_action( 'admin_print_scripts', $workshops_prefix . 'admin_js' );
+add_action( 'clean_post_cache', $workshops_prefix . 'clear_cache' );
+add_action( 'delete_post', $workshops_prefix . 'clear_cache' );
+add_action( 'posts_selection', $workshops_prefix . 'check_cache' );
+add_action( 'save_post', $workshops_prefix . 'clear_cache' );
+add_action( 'save_post', $workshops_prefix . 'save_post' );
+add_action( 'shutdown', $workshops_prefix . 'save_cache', 0 );
+add_action( 'update_option', $workshops_prefix . 'clear_cache' );
+
+add_filter( 'the_title', $workshops_prefix . 'handle_title' );
 
 add_image_size( $workshops_size_large, 540, 460 );
 add_image_size( $workshops_size_small, 140, 140, true );

@@ -1,58 +1,35 @@
 <?php get_header(); ?>
 <div id="learning">
-	<ul id="learning-carousel">
-		<?php
-		$q	= new WP_Query(
-			array(
-				'post_type'			=> $workshops_name_skills,
-				'posts_per_page'	=> -1
-			)
-		);
-		
-		foreach ( $q->posts as $v ) 
-		{
-			?>
-				<li class="hide">
-					<div class="thumbnail" style="background-image: url(<?php echo workshops_get_image_src( $v->ID, $workshops_size_large ); ?>)">
-						<canvas></canvas>
-					</div>
-					<div class="info">
-						<h3>
-							<?php echo apply_filters( 'the_title', $v->post_title ); ?>
-						</h3>
-						<p class="excerpt">
-							<?php echo $v->post_excerpt; ?>
-						</p>
-						<div class="content">
-							<?php echo $v->post_content; ?>
-						</div>
-					</div>
-				</li>
-			<?php
-		}
-		?>
-	</ul>
-	<ul id="learning-thumbs">
-		<?php foreach ( $q->posts as $v ): ?>
-			<li>
-				<div class="thumbnail" style="background-image: url(<?php echo workshops_get_image_src( $v->ID, $workshops_size_small ); ?>)">
-					<canvas></canvas>
-				</div>
-				<div class="info">
-					<h4>
-						<?php echo apply_filters( 'the_title', $v->post_title ); ?>
-					</h4>
-				</div>
-				<hr />
-			</li>
-		<?php endforeach; ?>
-	</ul>
-</div>
-<div id="who">
-	
+	<?php the_post(); the_content(); ?>
 </div>
 <div id="dates">
-	
+	<div class="header-block">
+		<hr />
+		<h2>The next workshop is</h2>
+		<hr />
+	</div>
+	<?php
+	query_posts( 'posts_per_page=1' ); the_post();
+	?>
+	<h1><?php the_title(); ?></h1>
+	<h3>By <?php workshops_the_speaker(); ?></h3>
+	<div>
+		<div class="col">
+			<blockquote>
+				<?php the_content(); ?>
+			</blockquote>
+			<h3><?php workshops_the_date(); ?> at <?php workshops_the_time(); ?></h3>
+			<h3 class="left">Venue:</h3>
+			<address>
+				<p>
+					<?php workshops_the_location(); ?>
+				</p>
+			</address>
+		</div>
+		<div class="col">
+			<iframe src="http://maps.google.co.uk/?q=<?php echo urlencode( workshops_get_the_location() ); ?>&amp;output=embed"></iframe>
+		</div>
+	</div>
 </div>
 <div id="cost">
 	

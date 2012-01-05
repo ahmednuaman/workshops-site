@@ -4,13 +4,12 @@ var S	= {
 	ease														: 'easeInOutExpo',
 	hasAnimations												: false,
 	hasTransitions												: false,
-	menuHeight													: 0,
+	menuHeight													: 40,
 	
 	ready														: function()
 	{
 		var h	= window.location.hash;
 		
-		S.calculateHeights();
 		S.detectBrowser();
 		S.prepareHashLinks();
 		
@@ -23,11 +22,6 @@ var S	= {
 		{
 			S.prepareHomeCarousel();
 		}
-	},
-	
-	calculateHeights											: function()
-	{
-		S.menuHeight	= $( '#menu' ).outerHeight() * 2;
 	},
 	
 	prepareHashLinks											: function()
@@ -100,11 +94,14 @@ var S	= {
 	
 	scrollTo													: function(h)
 	{
-		var y	= h.length > 1 ? $( h ).offset().top - S.menuHeight : 0;
+		var y	= h.length > 1 ? $( h ).offset().top - S.menuHeight : 0; console.log(y,$( h ).offset(),$(h));
 		
 		$( 'html, body' ).animate({
 			'scrollTop'	: y
-		}, 2000, S.ease );
+		}, 1000, S.ease, function()
+		{
+			window.location.hash	= h;
+		});
 	},
 	
 	detectBrowser												: function()
