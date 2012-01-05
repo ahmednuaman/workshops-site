@@ -4,9 +4,7 @@
 </div>
 <div id="dates">
 	<div class="header-block">
-		<hr />
 		<h2>The next workshop is</h2>
-		<hr />
 	</div>
 	<?php
 	query_posts( 'posts_per_page=1' ); the_post();

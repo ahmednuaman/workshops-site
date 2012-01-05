@@ -1,47 +1,46 @@
-var S	= {
-	cssAnimation												: 'webkitAnimationEnd animationend oAnimationEnd',
-	cssTransition												: 'webkitTransitionEnd transitionend oTransitionEnd',
-	ease														: 'easeInOutExpo',
-	hasAnimations												: false,
-	hasTransitions												: false,
-	menuHeight													: 40,
+var Workshops	= function(window)
+{
+	var ease           = 'easeInOutExpo';
+	var hasAnimations  = false;
+	var hasTransitions = false;
+	var menuHeight     = 40;
 	
-	ready														: function()
+	function ready()
 	{
 		var h	= window.location.hash;
 		
-		S.detectBrowser();
-		S.prepareHashLinks();
+		detectBrowser();
+		prepareHashLinks();
 		
 		if ( h.length > 0 )
 		{
-			S.scrollTo( h );
+			scrollTo( h );
 		}
 		
 		if ( $( 'body' ).hasClass( 'home' ) )
 		{
-			S.prepareHomeCarousel();
+			prepareHomeCarousel();
 		}
-	},
+	}
 	
-	prepareHashLinks											: function()
+	function prepareHashLinks()
 	{
 		$( 'a[href^="/#"]' ).click( function()
 		{
 			var h	= '#' + $( this ).prop( 'href' ).split( '#' )[ 1 ];
 			
-			S.scrollTo( h );
+			scrollTo( h );
 			
 			return false;
 		});
-	},
+	}
 	
-	prepareHomeCarousel											: function()
+	function prepareHomeCarousel()
 	{
 		var lis	= $( '#learning-carousel > li' );
 		var ts	= $( '#learning-thumbs > li' );
 		
-		if ( S.hasTransitions )
+		if ( hasTransitions )
 		{
 			lis.addClass( 'hide' );
 		}
@@ -57,7 +56,7 @@ var S	= {
 			var ls	= lis.filter( ':visible' );
 			var l	= lis.eq( i );
 			
-			if ( S.hasTransitions )
+			if ( hasTransitions )
 			{
 				ls.addClass( 'hide' );
 				
@@ -68,7 +67,7 @@ var S	= {
 			}
 			else
 			{
-				ls.stop( true ).fadeOut( 'fast', S.ease, function()
+				ls.stop( true ).fadeOut( 'fast', ease, function()
 				{
 					$( '.thumbnail', l ).css({
 						'margin-top'	: 100,
@@ -76,7 +75,7 @@ var S	= {
 					}).animate({
 						'margin-top'	: 0,
 						'opacity'		: 1
-					}, 'slow', S.ease );
+					}, 'slow', ease );
 					
 					$( '.excerpt', l ).hide().delay( 500 ).fadeIn();
 					
@@ -90,21 +89,21 @@ var S	= {
 			
 			t.addClass( 'selected' );
 		}).eq( 0 ).click();
-	},
+	}
 	
-	scrollTo													: function(h)
+	function scrollTo(h)
 	{
-		var y	= h.length > 1 ? $( h ).offset().top - S.menuHeight : 0; console.log(y,$( h ).offset(),$(h));
+		var y	= h.length > 1 ? $( h ).offset().top - menuHeight : 0; console.log(y,$( h ).offset(),$(h));
 		
 		$( 'html, body' ).animate({
 			'scrollTop'	: y
-		}, 1000, S.ease, function()
+		}, 1000, ease, function()
 		{
 			window.location.hash	= h;
 		});
-	},
+	}
 	
-	detectBrowser												: function()
+	function detectBrowser()
 	{
 		if ( $.browser.msie )
 		{
@@ -160,9 +159,11 @@ var S	= {
 		
 		$( 'html' ).removeClass( 'no-js' );
 		
-		S.hasAnimations		= $( 'html' ).hasClass( 'cssanimations' );
-		S.hasTransitions	= $( 'html' ).hasClass( 'csstransitions' );
+		hasAnimations	= $( 'html' ).hasClass( 'cssanimations' );
+		hasTransitions	= $( 'html' ).hasClass( 'csstransitions' );
 	}
+	
+	return ready;
 };
 
 $.extend($.easing,
@@ -180,4 +181,4 @@ $.extend($.easing,
 // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
 // s.parentNode.insertBefore(g,s)}(document,'script'));
 
-$( document ).ready( S.ready );
+$( document ).ready( new Workshops( window ) );
