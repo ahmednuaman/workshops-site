@@ -13,10 +13,7 @@ $workshops_default_post_props	= array(
 	'has_archive'		=> false
 );	
 
-$workshops_name_skills		= $workshops_prefix . 'skills';
 $workshops_name_speakers	= $workshops_prefix . 'speakers';
-$workshops_size_large		= 'skills-large';
-$workshops_size_small		= 'skills-small';
 
 register_nav_menu( 'top_front_page', 'Top for front page' );
 
@@ -30,21 +27,7 @@ function workshops_init()
 function workshops_register_post_types()
 {
 	global $workshops_default_post_props;
-	global $workshops_name_skills;
 	global $workshops_name_speakers;
-	
-	$props_skills	= $workshops_default_post_props;
-	
-	$props_skills[ 'label' ]	= __( 'The Skills' );
-	$props_skills[ 'labels' ]	= array(
-		'all_items'		=> __( 'All Skills' ),
-		'name'			=> __( 'Skills' ),
-		'singular_name'	=> __( 'A Skill' )
-	);
-	
-	array_push( $props_skills[ 'supports' ], 'excerpt' );
-	
-	// register_post_type( $workshops_name_skills, $props_skills );
 	
 	$props_speakers	= $workshops_default_post_props;
 	
@@ -370,6 +353,23 @@ function workshops_get_dates()
 	<?php
 }
 
+function workshops_handle_shortcode_bloginfo($a)
+{
+	return get_bloginfo( $a[ 'get' ] );
+}
+
+function workshops_handle_content($c)
+{
+	global $post;
+	
+	if ( strpos( $c, '<' ) === 0 )
+	{
+		remove_filter( 'the_content', 'wpautop' );
+	}
+	
+	return $c;
+}
+
 add_action( 'init', $workshops_prefix . 'init' );
 add_action( 'add_meta_boxes', $workshops_prefix . 'register_meta_boxes' );
 add_action( 'admin_print_scripts', $workshops_prefix . 'admin_js' );
@@ -381,7 +381,7 @@ add_action( 'save_post', $workshops_prefix . 'save_post' );
 add_action( 'shutdown', $workshops_prefix . 'save_cache', 0 );
 add_action( 'update_option', $workshops_prefix . 'clear_cache' );
 
+add_filter( 'the_content', $workshops_prefix . 'handle_content', 9 );
 add_filter( 'the_title', $workshops_prefix . 'handle_title' );
 
-add_image_size( $workshops_size_large, 540, 460 );
-add_image_size( $workshops_size_small, 140, 140, true );
+add_shortcode( 'bloginfo', $workshops_prefix . 'handle_shortcode_bloginfo' );
