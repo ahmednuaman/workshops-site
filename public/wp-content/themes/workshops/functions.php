@@ -360,11 +360,16 @@ function workshops_handle_shortcode_bloginfo($a)
 
 function workshops_handle_content($c)
 {
-	global $post;
-	
-	if ( strpos( $c, '<' ) === 0 )
+	if ( strpos( $c, '<' ) !== false )
 	{
 		remove_filter( 'the_content', 'wpautop' );
+	}
+	else
+	{
+		if ( !has_filter( 'the_content', 'wpautop' ) )
+		{
+			add_filter( 'the_content', 'wpautop' );
+		}
 	}
 	
 	return $c;
