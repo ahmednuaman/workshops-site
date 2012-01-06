@@ -60,12 +60,15 @@ function workshops_register_post_types()
 
 function workshops_register_meta_boxes()
 {
+	global $workshops_name_speakers;
 	global $workshops_prefix;
 	
 	add_meta_box( $workshops_prefix . 'date', __( 'Date of workshop' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
 	add_meta_box( $workshops_prefix . 'time', __( 'Time of workshop' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
 	add_meta_box( $workshops_prefix . 'speaker', __( 'Speakers' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
 	add_meta_box( $workshops_prefix . 'location', __( 'Location' ), $workshops_prefix . 'meta_box_callback', 'post', 'normal', 'high' );
+	
+	add_meta_box( $workshops_prefix . 'twitter', __( 'Twitter' ), $workshops_prefix . 'meta_box_callback', $workshops_name_speakers, 'normal', 'high' );
 }
 
 function workshops_meta_box_callback($p, $m)
