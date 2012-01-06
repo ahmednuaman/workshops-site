@@ -10,16 +10,14 @@
 						</p>
 					</div>
 					<div class="iframe">
-						<iframe src="https://docs.google.com/spreadsheet/embeddedform?formkey=dGZocWkzbW51S2p3WnBLOFYyMGk3ZEE6MQ" width="100%">Loading...</iframe>
+						<iframe src="https://docs.google.com/spreadsheet/embeddedform?formkey=dGZocWkzbW51S2p3WnBLOFYyMGk3ZEE6MQ">Loading...</iframe>
 					</div>
 				</div>
 				<div id="footnote">
 					<div class="header-block">
 						<h2>A footnote</h2>
 					</div>
-					<div class="col">
-						<?php query_posts( 'page_id=88' ); the_post(); the_content(); ?>
-					</div>
+					<?php dynamic_sidebar(); ?>
 				</div>
 			</div>
 		</div>

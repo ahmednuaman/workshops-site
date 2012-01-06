@@ -390,3 +390,10 @@ add_filter( 'the_content', $workshops_prefix . 'handle_content', 9 );
 add_filter( 'the_title', $workshops_prefix . 'handle_title' );
 
 add_shortcode( 'bloginfo', $workshops_prefix . 'handle_shortcode_bloginfo' );
+
+register_sidebar( array(
+	'before_widget'	=> '',
+	'after_width'	=> '',
+	'before_title'	=> '',
+	'after_title'	=> ''
+));
