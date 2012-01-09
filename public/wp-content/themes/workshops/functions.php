@@ -320,16 +320,25 @@ function workshops_get_the_date()
 	return $n !== 'TBC' ? date( get_option( 'date_format' ), strtotime( $n ) ) : $n;
 }
 
-function workshops_get_dates()
+function workshops_get_dates($n=true)
 {
+	if ( $n ) 
+	{
+		query_posts( 'posts_per_page=1' );
+	}
+	
+	the_post();
 	?>
 		<div id="dates">
 			<div class="header-block">
-				<h2>The next workshop is...</h2>
+				<h2>
+					<?php if ( $n ): ?>
+						The next workshop is...
+					<?php else: ?>
+						<?php  workshops_the_date(); ?> at <?php workshops_the_time(); ?>
+					<?php endif; ?>
+				</h2>
 			</div>
-			<?php
-			query_posts( 'posts_per_page=1' ); the_post();
-			?>
 			<h1><?php the_title(); ?></h1>
 			<h3>By <?php workshops_the_speaker(); ?></h3>
 			<div>
