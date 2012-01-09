@@ -11,5 +11,8 @@ query_posts( 'posts_per_page=5&paged=' . $p );
 
 while ( have_posts() ): ?>
 	<?php workshops_get_dates( false ); ?>
-<?php endwhile; ?>
-<?php get_footer(); ?>
+<?php endwhile;
+
+wp_reset_query();
+
+get_footer(); ?>

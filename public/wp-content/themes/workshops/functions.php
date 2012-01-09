@@ -360,6 +360,11 @@ function workshops_get_dates($n=true)
 			</div>
 		</div>
 	<?php
+	
+	if ( $n ) 
+	{
+		wp_reset_query();
+	}
 }
 
 function workshops_handle_shortcode_bloginfo($a)
